@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile Birther</title>
+<style>
+body {
+font-family: sans-serif;
+background-color: #f4f4f4;
+padding: 20px;
+}
+#fillable-form-wrapper {
+max-width: 800px;
+margin: 0 auto;
+background: #fff;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+margin-bottom: 15px;
+}
+label {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+}
+input[type="text"], textarea {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+font-family: monospace;
+}
+#generate-code-button, #copy-code-button {
+background-color: #007BFF;
+color: white;
+padding: 10px 15px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 16px;
+margin-top: 10px;
+}
+#copy-code-button {
+background-color: #28a745;
+display: none; /* Hidden by default */
+}
+.code-container {
+position: relative;
+background-color: #f8f8f8;
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 10px;
+margin-top: 20px;
+}
+.code-container pre {
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+#output-code {
+display: block; /* Shown after generation */
+}
+</style>
+</head>
+<body>
+
+<div id="fillable-form-wrapper">
+<h2>Profile Generator</h2>
+<p>Fill out the form below to create your staff profile code.</p>
+
+<div class="form-group">
+<label for="headshot-link">Headshot Link:</label>
+<input type="text" id="headshot-link" placeholder="e.g., https://example.com/images/headshot.jpg">
+</div>
+<div class="form-group">
+<label for="email">Email:</label>
+<input type="text" id="email" placeholder="e.g., name@example.com">
+</div>
+<div class="form-group">
+<label for="name">Full Name:</label>
+<input type="text" id="name" placeholder="e.g., Jane Doe">
+</div>
+<div class="form-group">
+<label for="position-title">Position Title:</label>
+<input type="text" id="position-title" placeholder="e.g., Marketing Manager">
+</div>
+<div class="form-group">
+<label for="bio">Bio:</label>
+<textarea id="bio" rows="5" placeholder="Enter a brief biography."></textarea>
+</div>
+<div class="form-group">
+<label for="webpage-link-1">Webpage Link 1:</label>
+<input type="text" id="webpage-link-1" placeholder="e.g., https://linkedin.com/in/janedoe">
+</div>
+<div class="form-group">
+<label for="page-name-1">Page Name or Description 1:</label>
+<input type="text" id="page-name-1" placeholder="e.g., LinkedIn Profile">
+</div>
+<div class="form-group">
+<label for="webpage-link-2">Webpage Link 2:</label>
+<input type="text" id="webpage-link-2" placeholder="e.g., https://twitter.com/janedoe">
+</div>
+<div class="form-group">
+<label for="page-name-2">Page Name or Description 2:</label>
+<input type="text" id="page-name-2" placeholder="e.g., Twitter Profile">
+</div>
+<div class="form-group">
+<label for="phone">Phone Number:</label>
+<input type="text" id="phone" placeholder="e.g., (123) 456-7890">
+</div>
+
+<button id="generate-code-button">Generate Code</button>
+
+<div class="code-container">
+<pre><code id="output-code"></code></pre>
+</div>
+
+<button id="copy-code-button">Copy Code</button>
+</div>
+
+<script>
+document.getElementById('generate-code-button').addEventListener('click', function() {
+const headshotLink = document.getElementById('headshot-link').value;
+const email = document.getElementById('email').value;
+const name = document.getElementById('name').value;
+const positionTitle = document.getElementById('position-title').value;
+const bio = document.getElementById('bio').value;
+const webpageLink1 = document.getElementById('webpage-link-1').value;
+const pageName1 = document.getElementById('page-name-1').value;
+const webpageLink2 = document.getElementById('webpage-link-2').value;
+const pageName2 = document.getElementById('page-name-2').value;
+const phone = document.getElementById('phone').value;
+
+const phoneParts = phone.match(/\(?(\d{3})\)?\s*(\d{3})\s*-*(\d{4})/);
+const areaCode = phoneParts ? phoneParts[1] : 'PHONE AREA CODE';
+const numbers = phoneParts ? `${phoneParts[2]}-${phoneParts[3]}` : 'NUMBERS';
+
+const profileTemplate = `<div id="staff-profile">
+<div class="staff-profile-flex-wrapper">
+<div class="staff-profile-image-panel" style="background-image: url('${headshotLink}'); background-size: cover; background-position: center;"></div>
+<div class="staff-profile-content-panel">
+<h3>
+<a href="mailto:${email}" target="_blank">${name}</a>
+<span style="font-size: 18px; font-weight: normal; display: block;">${positionTitle}<br><br></br></span>
+</h3>
+<div class="staff-profile-accordion-item">
+<button class="staff-profile-accordion-button">About ►</button>
+<div class="staff-profile-accordion-content">
+<ul>
+<li><button class="expandable-text">Bio</button>
+<p class="expandable-content">${bio}<br></br></p></li>
+<li><a href="${webpageLink1}" target="_blank">${pageName1}</a></li>
+<li><a href="${webpageLink2}" target="_blank">${pageName2}</a></li>
+</ul>
+</div>
+</div>
+<div class="staff-profile-accordion-item">
+<button class="staff-profile-accordion-button">Contact ►</button>
+<div class="staff-profile-accordion-content">
+<ul>
+<li><strong>Phone:</strong> +1 (${areaCode}) ${numbers}</li>
+<li><a href="mailto:${email}" class="email-link">Click Here to Email<br>${name}</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>`;
+
+document.getElementById('output-code').textContent = profileTemplate;
+document.getElementById('copy-code-button').style.display = 'block';
+});
+
+document.getElementById('copy-code-button').addEventListener('click', function() {
+const code = document.getElementById('output-code').textContent;
+navigator.clipboard.writeText(code).then(() => {
+alert('Code copied to clipboard!');
+}).catch(err => {
+console.error('Failed to copy code: ', err);
+});
+});
+</script>
+
+</body>
+</html>
